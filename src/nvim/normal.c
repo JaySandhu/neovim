@@ -4008,8 +4008,10 @@ static bool nv_screengo(oparg_T *oap, int dir, long dist)
 }
 
 /*
- * Mouse scroll wheel: Default action is to scroll three lines, or one page
- * when Shift or Ctrl is used.
+ * Mouse scroll wheel: Default action is to scroll N lines, where N is
+ * controlled by the mousescroll option. When Shift or Ctrl is used, scrolls by
+ * one page instead.
+ *
  * K_MOUSEUP (cap->arg == 1) or K_MOUSEDOWN (cap->arg == 0) or
  * K_MOUSELEFT (cap->arg == -1) or K_MOUSERIGHT (cap->arg == -2)
  */
@@ -4037,8 +4039,8 @@ static void nv_mousescroll(cmdarg_T *cap)
     if (mod_mask & (MOD_MASK_SHIFT | MOD_MASK_CTRL)) {
       (void)onepage(cap->arg ? FORWARD : BACKWARD, 1L);
     } else {
-      cap->count1 = 3;
-      cap->count0 = 3;
+      cap->count1 = (long)p_mousescroll;
+      cap->count0 = (long)p_mousescroll;
       nv_scroll_line(cap);
     }
   } else {

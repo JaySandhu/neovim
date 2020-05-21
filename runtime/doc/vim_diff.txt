@@ -200,6 +200,7 @@ Options:
               for |hl-EndOfBuffer| marker
   'inccommand' shows interactive results for |:substitute|-like commands
   'listchars' local to window
+  'mousescroll' number of lines to scroll when scrolling with a mouse wheel
   'pumblend' pseudo-transparent popupmenu
   'scrollback'
   'signcolumn' supports up to 9 dynamic/fixed columns

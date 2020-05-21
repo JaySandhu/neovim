@@ -8172,7 +8172,7 @@ static void ins_mousescroll(int dir)
         scroll_redraw(dir,
             (long)(curwin->w_botline - curwin->w_topline));
       else
-        scroll_redraw(dir, 3L);
+        scroll_redraw(dir, (long)p_mousescroll);
     } else {
         mouse_scroll_horiz(dir);
     }
