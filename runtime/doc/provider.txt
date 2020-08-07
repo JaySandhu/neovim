@@ -154,69 +154,15 @@ can be slow. To avoid this, set g:node_host_prog to the host path: >
 ==============================================================================
 Clipboard integration 			      *provider-clipboard* *clipboard*
 
-Nvim has no direct connection to the system clipboard. Instead it depends on
-a |provider| which transparently uses shell commands to communicate with the
-system clipboard or any other clipboard "backend".
+The Nvim binary bundled with Neovim.app comes built in native clipboard support.
+The clipboard is compatible with MacVim in that it correctly handles block mode
+pasting. Unfortunately, the usual provider based support is not available.
 
 To ALWAYS use the clipboard for ALL operations (instead of interacting with
 the '+' and/or '*' registers explicitly): >
     set clipboard+=unnamedplus
 
 See 'clipboard' for details and options.
-
-							      *clipboard-tool*
-The presence of a working clipboard tool implicitly enables the '+' and '*'
-registers. Nvim looks for these clipboard tools, in order of priority:
-
-  - |g:clipboard|
-  - pbcopy, pbpaste (macOS)
-  - wl-copy, wl-paste (if $WAYLAND_DISPLAY is set)
-  - xclip (if $DISPLAY is set)
-  - xsel (if $DISPLAY is set)
-  - lemonade (for SSH) https://github.com/pocke/lemonade
-  - doitclient (for SSH) http://www.chiark.greenend.org.uk/~sgtatham/doit/
-  - win32yank (Windows)
-  - tmux (if $TMUX is set)
-
-								 *g:clipboard*
-To configure a custom clipboard tool, set g:clipboard to a dictionary.
-For example this configuration integrates the tmux clipboard: >
-
-    let g:clipboard = {
-          \   'name': 'myClipboard',
-          \   'copy': {
-          \      '+': 'tmux load-buffer -',
-          \      '*': 'tmux load-buffer -',
-          \    },
-          \   'paste': {
-          \      '+': 'tmux save-buffer -',
-          \      '*': 'tmux save-buffer -',
-          \   },
-          \   'cache_enabled': 1,
-          \ }
-
-If "cache_enabled" is |TRUE| then when a selection is copied Nvim will cache
-the selection until the copy command process dies. When pasting, if the copy
-process has not died the cached selection is applied.
-
-g:clipboard can also use functions (see |lambda|) instead of strings.
-For example this configuration uses the g:foo variable as a fake clipboard: >
-
-    let g:clipboard = {
-          \   'name': 'myClipboard',
-          \   'copy': {
-          \      '+': {lines, regtype -> extend(g:, {'foo': [lines, regtype]}) },
-          \      '*': {lines, regtype -> extend(g:, {'foo': [lines, regtype]}) },
-          \    },
-          \   'paste': {
-          \      '+': {-> get(g:, 'foo', [])},
-          \      '*': {-> get(g:, 'foo', [])},
-          \   },
-          \ }
-
-The "copy" function stores a list of lines and the register type. The "paste"
-function returns the clipboard as a `[lines, regtype]` list, where `lines` is
-a list of lines and `regtype` is a register type conforming to |setreg()|.
 
 ==============================================================================
 Paste 							*provider-paste* *paste*
