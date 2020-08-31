@@ -4332,10 +4332,6 @@ static char *set_num_option(int opt_idx, char_u *varp, long value,
     if (value < 0) {
       errmsg = e_positive;
     }
-  } else if (pp == &p_mousescroll) {
-    if (value < 1) {
-      errmsg = e_positive;
-    }
   }
 
   // Don't change the value and return early if validation failed.

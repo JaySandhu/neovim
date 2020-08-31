@@ -1602,13 +1602,6 @@ return {
       defaults={if_true={vi="extend"}}
     },
     {
-      full_name='mousescroll',
-      type='number', scope={'global'},
-      vi_def=true,
-      varname='p_mousescroll',
-      defaults={if_true={vi=1}}
-    },
-    {
       full_name='mouseshape', abbreviation='mouses',
       type='string', list='onecomma', scope={'global'},
       deny_duplicates=true,
