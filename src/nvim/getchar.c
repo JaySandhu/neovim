@@ -2044,14 +2044,27 @@ static int vgetorpeek(bool advance)
              */
             if (mp->m_expr) {
               int save_vgetc_busy = vgetc_busy;
+              int save_cursor_row = ui_current_row();
+              int save_cursor_col = ui_current_col();
 
               vgetc_busy = 0;
               save_m_keys = vim_strsave(mp->m_keys);
               save_m_str = vim_strsave(mp->m_str);
               s = eval_map_expr(save_m_str, NUL);
               vgetc_busy = save_vgetc_busy;
-            } else
+
+              if (State & CMDLINE) {
+                redrawcmdline();
+              } else {
+                if (must_redraw) {
+                  update_screen(0);
+                }
+
+                ui_cursor_goto(save_cursor_row, save_cursor_col);
+              }
+            } else {
               s = mp->m_str;
+            }
 
             /*
              * Insert the 'to' part in the typebuf.tb_buf.
@@ -2382,7 +2395,7 @@ static int vgetorpeek(bool advance)
   --vgetc_busy;
 
   return c;
-}
+}  // NOLINT(readability/fn_size)
 
 /*
  * inchar() - get one character from
