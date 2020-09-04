@@ -3878,6 +3878,9 @@ eval_map_expr (
   int save_msg_col;
   int save_msg_row;
 
+  bool save_may_garabage_collect = may_garbage_collect;
+  may_garbage_collect = false;
+
   /* Remove escaping of CSI, because "str" is in a format to be used as
    * typeahead. */
   expr = vim_strsave(str);
@@ -3902,6 +3905,7 @@ eval_map_expr (
 
   restore_cmdline_alloc(save_cmd);
   xfree(expr);
+  may_garbage_collect = save_may_garabage_collect;
 
   if (p == NULL)
     return NULL;
