@@ -2065,6 +2065,8 @@ static int vgetorpeek(bool advance)
                   update_screen(0);
                 }
 
+                // The mapping may do anything, but we expect it to take care of
+                // redrawing.  Do put the cursor back where it was.
                 ui_cursor_goto(save_cursor_row, save_cursor_col);
               }
             } else {
