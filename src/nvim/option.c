@@ -2607,12 +2607,13 @@ static char_u *check_mousescroll(char_u *string)
       }
     }
 
+    errno = 0;
     *direction = strtol((char *)string + 4, NULL, 10);
 
     // Num options are generally kept within the signed int range.
     // We know this number won't be negative because we've already checked for
     // a minus sign. We'll allow 0 as a means of disabling mouse scrolling.
-    if (*direction > INT_MAX) {
+    if (*direction > INT_MAX || errno == ERANGE) {
       return e_invarg;
     }
 
